@@ -26,7 +26,16 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           Container(
             height: height,
-            color: Colors.blueGrey[900],
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Colors.grey[900]!,
+                    Colors.black,
+                    Colors.grey[900]!,
+                  ]),
+            ),
             child: Padding(
               padding: const EdgeInsets.only(top: 76.0, left: 40, bottom: 600),
               child: Padding(
@@ -81,8 +90,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.blueGrey[400]!,
-                        Colors.white,
+                        Colors.cyan[700]!,
+                        Colors.cyan[400]!,
                       ]),
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(20),

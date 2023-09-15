@@ -62,9 +62,9 @@ class _UserPageState extends State<UserPage> {
               topRight: Radius.circular(30.0),
             ),
             child: BottomNavigationBar(
-              backgroundColor: Colors.white,
-              selectedItemColor: Colors.black,
-              unselectedItemColor: Colors.black,
+              backgroundColor: Colors.cyan[500],
+              selectedItemColor: Colors.grey[900],
+              unselectedItemColor: Colors.grey[900],
               selectedFontSize: 18,
               unselectedFontSize: 14,
               iconSize: 27,
@@ -73,27 +73,27 @@ class _UserPageState extends State<UserPage> {
               onTap: (index) => setState(() {
                 currentIndex = index;
               }),
-              items: const [
+              items: [
                 BottomNavigationBarItem(
                   icon: FaIcon(
-                    Icons.account_balance,
-                    color: Colors.black,
+                    Icons.video_camera_back_outlined,
+                    color: Colors.grey[900],
                   ),
-                  label: "Suggestions",
+                  label: "Camera",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.home_outlined,
-                    color: Colors.black,
+                    Icons.text_format_outlined,
+                    color: Colors.grey[900],
                   ),
-                  label: "Home",
+                  label: "Text",
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.auto_graph_outlined,
-                    color: Colors.black,
+                    Icons.audiotrack_outlined,
+                    color: Colors.grey[900],
                   ),
-                  label: "Analytics",
+                  label: "Audio",
                 ),
               ],
             ),
