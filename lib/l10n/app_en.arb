@@ -1,0 +1,78 @@
+{
+    "language": "English",
+    "@language": {
+        "description": "The current Language"
+    },
+    "proceed": "Proceed",
+    "@proceed": {
+        "description": "For language dropdown" 
+    },
+    "chooseLanguage": "Choose a language.",
+    "@chooseLanguage": {
+        "description": "For language selection"
+    },
+    "landingPageOne": "Welcome to the AI driven solution to improve your writing. Let Correctify do your proofreading for you.",
+    "@landingPageOne": {
+        "description": "For first landing page"
+    },
+    "landingPageTwo": "Sit back, put your feet up while our state-of-the-art algorithms improve your essays and business proposals as per your needs.",
+    "@landingPageTwo": {
+        "description": "For second landing page"
+    },
+    "landingPageThree": "A few clicks to get various insights on how to improve your literary skills. Doesn't sound too bad, does it?",
+    "@landingPageThree": {
+        "description": "For third landing page"
+    },
+    "login": "Login",
+    "@login": {
+        "description": "For login"
+    },
+    "signup": "Signup",
+    "@signup": {
+        "description": "For signup"
+    },
+    "skip": "Skip",
+    "@skip": {
+        "description": "For skip"
+    },
+    "getStarted": "Get started",
+    "@getStarted": {
+        "description": "For get started"
+    },
+    "loginCatchphrase": "AI-Powered and Ready to Transform Your Writing.",
+    "@loginCatchphrase": {
+        "description": "for Login catchphrase"
+    },
+    "forgotPassword": "Forgot Password?",
+    "@forgotPassword": {
+        "description": "For forgot password"
+    }, 
+    "madeAnAcc": "Haven't yet made an account? Click here to",
+    "@madeAnAcc": {
+        "description": "for signup support"
+    },
+    "email": "Enter Email",
+    "@email": {
+        "description": "For enter email"
+    },
+    "password": "Enter Password",
+    "@password": {
+        "description": "for enter password"
+    },
+    "confirmPassword": "Confirm Password",
+    "@confirmPassword": {
+        "description": "For confirm password"
+    },
+    "forSignUp": "Sign Up",
+    "@forSignUp": {
+        "description": "For textspan signup"
+    },
+    "resetPass": "Reset password via email.",
+    "@resetPass": {
+        "description": "For reset pass"
+    },
+    "sendEmail": "Send email", 
+    "@sendEmail": {
+        "description": "For send email"
+    }
+}
