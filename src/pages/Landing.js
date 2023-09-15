@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Navbar from "../components/Navbar";
 import Statement from "../components/Statement";
 import Slide from "../components/Slide";

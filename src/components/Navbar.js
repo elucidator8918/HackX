@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const flag = localStorage.getItem("flag");
+  const ref = useRef(null);
   return (
     <div className="flex flex-row static ">
       <header className="absolute inset-x-0 top-0 z-50 bg-gradient-to-r from-cyan-500 to-teal-500">
@@ -52,37 +54,51 @@ export default function Navbar() {
             <a
               className="text-md font-semibold leading-6 text-gray-200 hover:font-extrabold hover:shadow-xl transition-all ease-in duration-100 p-2 rounded-lg"
               onClick={() => {
-                navigate("/");
+                navigate("/doc");
               }}
             >
-              FAQs
+              Document Checker
             </a>
-
-            <a
-              className="text-md font-semibold leading-6 text-gray-200 hover:font-extrabold hover:shadow-xl transition-all ease-in duration-100 p-2 rounded-lg"
-              onClick={() => {}}
-            >
-              About Us
-            </a>
+            {flag ? (
+              <a
+                className="text-md font-semibold leading-6 text-gray-200 hover:font-extrabold hover:shadow-xl transition-all ease-in duration-100 p-2 rounded-lg"
+                onClick={() => {
+                  navigate("/Assistant");
+                }}
+              >
+                {localStorage.getItem("name")}
+              </a>
+            ) : (
+              <a
+                className="text-md font-semibold leading-6 text-gray-200 hover:font-extrabold hover:shadow-xl transition-all ease-in duration-100 p-2 rounded-lg"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                About Us
+              </a>
+            )}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a
-              className="text-sm font-semibold leading-6 text-gray-100 mr-2 p-2 hover:bg-cyan-300 bg-teal-400  border-white rounded-md transition-all duration-500 ease-in-out border-2 "
-              onClick={() => {
-                navigate("/Signup");
-              }}
-            >
-              Sign Up <span aria-hidden="true"></span>
-            </a>
-            <a
-              className="text-sm font-semibold leading-6 text-gray-100 p-2 hover:bg-cyan-300 bg-teal-400   border-white rounded-md transition-all duration-500 ease-in-out border-2 "
-              onClick={() => {
-                navigate("/Login");
-              }}
-            >
-              Log in <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
+          {!flag && (
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+              <a
+                className="text-sm font-semibold leading-6 text-gray-100 mr-2 p-2 hover:bg-cyan-300 bg-teal-400  border-white rounded-md transition-all duration-500 ease-in-out border-2 "
+                onClick={() => {
+                  navigate("/Signup");
+                }}
+              >
+                Sign Up <span aria-hidden="true"></span>
+              </a>
+              <a
+                className="text-sm font-semibold leading-6 text-gray-100 p-2 hover:bg-cyan-300 bg-teal-400   border-white rounded-md transition-all duration-500 ease-in-out border-2 "
+                onClick={() => {
+                  navigate("/Login");
+                }}
+              >
+                Log in <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          )}
         </nav>
       </header>
     </div>

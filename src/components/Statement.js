@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function Statement() {
+  const flag = localStorage.getItem("flag");
   const navigate = useNavigate();
   return (
     <div className="overflow-hidden pt-6 sm:pt-18 no-scrollbar">
@@ -29,7 +30,11 @@ export default function Statement() {
                 <button
                   className=" animate-bounce flex justify-center items-center text-sm font-bold leading-6 text-gray-100 text-bold py-3 px-12 bg-cyan-500 hover:bg-teal-500 rounded-md transition-all duration-150 ease-in-out border-1"
                   onClick={() => {
-                    navigate("/signup");
+                    if (!flag) {
+                      navigate("/signup");
+                    } else {
+                      navigate("/Assistant");
+                    }
                   }}
                 >
                   Try our AI Assistant

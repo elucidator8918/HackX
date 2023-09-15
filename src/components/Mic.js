@@ -48,7 +48,7 @@ const Mic = () => {
   const [correctedText, setCorrectedText] = useState("");
 
   const mimeType = "audio/webm";
-  const ngrokurl = "https://84cb-35-237-78-36.ngrok-free.app";
+  const ngrokurl = "https://6c28-34-16-180-181.ngrok-free.app";
   //in built api reference
   const mediaRecorder = useRef(null);
 
@@ -378,7 +378,22 @@ const Mic = () => {
               <h2 className="text-lg font-semibold">
                 Corrected Text by Correctify 🤖
               </h2>
-              <p className="mt-2 text-sm">{correctedText}</p>
+              {correctedText ? (
+                <p className="mt-2 text-sm">{correctedText}</p>
+              ) : (
+                <CirclesWithBar
+                  height="40"
+                  width="40"
+                  color="#009CFF"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                  outerCircleColor=""
+                  innerCircleColor=""
+                  barColor=""
+                  ariaLabel="circles-with-bar-loading"
+                />
+              )}
             </div>
             <button
               onClick={falconResponse}
