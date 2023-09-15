@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hackx/BottomBar/AudioInput.dart';
-import 'package:hackx/BottomBar/OCRInput.dart';
-import 'package:hackx/BottomBar/Chat/TextInput.dart';
 import 'package:hackx/Screens/Drawer/Drawer.dart';
 import 'package:hackx/Screens/Profile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'BottomBar/AudioInput.dart';
+import 'BottomBar/Chat/TextInput.dart';
+import 'BottomBar/OCRInput.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key, required this.token}) : super(key: key);

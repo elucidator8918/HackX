@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../constants.dart';
+import '../../Models/AudioModel.dart';
+import '../../Models/Utils.dart';
+import '../../constants.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:path/path.dart';
@@ -11,8 +13,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
-import '../models/AudioModel.dart';
-import '../Models/Utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 var lst = [];
