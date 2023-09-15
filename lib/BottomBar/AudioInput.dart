@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -15,7 +16,6 @@ import '../Models/Utils.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 var lst = [];
-String ngrokurl = "https://3f61-34-124-150-43.ngrok-free.app";
 
 class AudioInput extends StatefulWidget {
   const AudioInput({super.key});
@@ -29,18 +29,11 @@ class _AudioInputState extends State<AudioInput>
   int maxDuration = 10;
   double deviceHeight = Constants().deviceHeight,
       deviceWidth = Constants().deviceWidth;
-  List<Color> gradientColors = const [
-    Color(0xffFF0069),
-    Color(0xffFED602),
-    Color(0xff7639FB),
-    Color(0xffD500C5),
-    Color(0xffFF7A01),
-    Color(0xffFF0069),
-  ];
   late AnimationController _controller;
   final recorder = FlutterSoundRecorder();
   final player = FlutterSoundPlayer();
   bool isRecorderReady = false, gotSomeTextYo = false, isPlaying = false;
+  String ngrokurl = Constants().url;
 
   Future record() async {
     if (!isRecorderReady) return;
@@ -54,7 +47,6 @@ class _AudioInputState extends State<AudioInput>
     if (kDebugMode) {
       print('Recorded audio: $path');
     }
-    //await player.startPlayer(fromURI: path, codec: Codec.aacADTS);
     lst = await sendAudio(audioPath);
     if (kDebugMode) {
       print(lst);
@@ -132,13 +124,13 @@ class _AudioInputState extends State<AudioInput>
                 SizedBox(
                   height: 50 * (height / deviceHeight),
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Speak into the mic",
+                    "Speak into the mic.",
                     style: TextStyle(
                         fontFamily: "productSansReg",
-                        color: Color(0xFF009CFF),
+                        color: Colors.cyan[500],
                         fontWeight: FontWeight.w700,
                         fontSize: 25),
                   ),
@@ -159,21 +151,21 @@ class _AudioInputState extends State<AudioInput>
                           twoDigits(duration.inSeconds.remainder(60));
                       return Text(
                         "$twoDigitMinutes:$twoDigitSeconds s",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF009CFF),
+                          color: Colors.cyan[500],
                           fontFamily: "productSansReg",
                         ),
                       );
                     }),
                 SizedBox(
-                  height: 70 * (height / deviceHeight),
+                  height: 80 * (height / deviceHeight),
                 ),
                 if (isPlaying)
                   Center(
                       child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: const Color(0xFF009CFF),
+                    color: Colors.cyan[500]!,
                     size: 50 * (height / deviceHeight),
                   )),
                 if (!isPlaying)
@@ -195,9 +187,14 @@ class _AudioInputState extends State<AudioInput>
                             padding: EdgeInsets.all(8.0),
                           ),
                   ),
-                SizedBox(
-                  height: 50 * (height / deviceHeight),
-                ),
+                if (!isPlaying)
+                  SizedBox(
+                    height: 50 * (height / deviceHeight),
+                  ),
+                if (isPlaying)
+                  SizedBox(
+                    height: 150 * (height / deviceHeight),
+                  ),
                 Container(
                   alignment: Alignment.center,
                   height: 60 * (height / deviceHeight),
@@ -214,8 +211,8 @@ class _AudioInputState extends State<AudioInput>
                         await stop();
                         _controller.reset();
                       } else {
-                        await record();
                         isPlaying = true;
+                        await record();
                         _controller.reset();
                         _controller.forward();
                       }
@@ -248,65 +245,12 @@ class _AudioInputState extends State<AudioInput>
     );
   }
 
-  Future getAudio(String text) async {
-    var res = await http.post(
-      Uri.parse('$ngrokurl/coqui-tts/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(
-          <String, String>{"text": text, 'emotion': "Cheerful & Professional"}),
-    );
-    if (res.statusCode == 200) {
-      if (kDebugMode) {
-        print(res.bodyBytes);
-      }
-      await player.startPlayer(fromDataBuffer: res.bodyBytes);
-    }
-  }
-
-  Future getNER(String text) async {
-    var res = await http.post(
-      Uri.parse('$ngrokurl/ner/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{"text": text}),
-    );
-    if (kDebugMode) {
-      print(res.statusCode);
-    }
-    if (res.statusCode == 200) {
-      if (kDebugMode) {
-        print(res.body);
-      }
-    }
-  }
-
-  Future<List<Object?>> getLLMResponse(String text) async {
-    var res = await http.post(
-      Uri.parse('$ngrokurl/chat/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{"text": text}),
-    );
-    Map<String, dynamic> data = jsonDecode(res.body);
-    var stuff = Audio.fromJson(data);
-    if (kDebugMode) {
-      print(res.statusCode);
-      await getAudio(stuff.text!);
-    }
-    if (res.statusCode == 200) {
-      if (kDebugMode) {
-        print(res.body);
-      }
-    }
-    return [stuff.text, res.statusCode];
-  }
-
   Future<List<Object?>> sendAudio(File? audioPath) async {
     List<Object?> lst = [];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var header = {'token': '$token'};
+    print(token);
     if (kDebugMode) {
       print(audioPath!.path);
     }
@@ -314,6 +258,7 @@ class _AudioInputState extends State<AudioInput>
       'POST',
       Uri.parse('$ngrokurl/transcribe/'),
     );
+    response.headers.addAll(header);
     response.files.add(http.MultipartFile(
         'file', audioPath!.readAsBytes().asStream(), audioPath.lengthSync(),
         filename: basename(audioPath.path),
@@ -331,14 +276,89 @@ class _AudioInputState extends State<AudioInput>
     Map<String, dynamic> data = jsonDecode(responseBody);
     var stuff = Audio.fromJson(data);
     if (res.statusCode == 200) {
-      lst = await getLLMResponse(stuff.text!);
-      await getNER(stuff.text!);
+      if (kDebugMode) {
+        print(stuff.text);
+      }
+      lst = await getRewritten(stuff.text!);
       if (kDebugMode) {
         print(stuff.text);
       }
     }
 
     return lst;
+  }
+
+  Future<List<Object?>> getRewritten(String text) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var res = await http.post(
+      Uri.parse('$ngrokurl/rewriter/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': '$token'
+      },
+      body: jsonEncode(<String, String>{
+        "text": "Rewrite such that grammatical errors are corrected: $text",
+        "emotion": "Professional & Cheerful"
+      }),
+    );
+    Map<String, dynamic> data = jsonDecode(res.body);
+    var stuff = Audio.fromJson(data);
+    if (kDebugMode) {
+      print(res.statusCode);
+      print(res.body);
+      await getAudio(stuff.text!);
+    }
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(res.body);
+      }
+    }
+    return [stuff.text, res.statusCode];
+  }
+
+  Future<List<Object?>> getGrammar(String text) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var res = await http.post(
+      Uri.parse('$ngrokurl/grammar/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': '$token'
+      },
+      body: jsonEncode(
+          <String, String>{"text": text, "emotion": "Professional & Cheerful"}),
+    );
+    Map<String, dynamic> data = jsonDecode(res.body);
+    var stuff = Audio.fromJson(data);
+    if (kDebugMode) {
+      print(res.statusCode);
+      print(res.body);
+      await getAudio(stuff.text!);
+    }
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(res.body);
+      }
+    }
+    return [stuff.text, res.statusCode];
+  }
+
+  Future getAudio(String text) async {
+    var res = await http.post(
+      Uri.parse('$ngrokurl/labs-tts/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, String>{"text": text, 'emotion': "Cheerful & Professional"}),
+    );
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(res.bodyBytes);
+      }
+      await player.startPlayer(fromDataBuffer: res.bodyBytes);
+    }
   }
 
   Future<File> saveAudioPermanently(String path) async {

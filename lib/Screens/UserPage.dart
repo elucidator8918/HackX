@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hackx/BottomBar/AudioInput.dart';
+import 'package:hackx/BottomBar/OCRInput.dart';
+import 'package:hackx/BottomBar/Chat/TextInput.dart';
 import 'package:hackx/Screens/Drawer/Drawer.dart';
 import 'package:hackx/Screens/Profile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -14,10 +17,10 @@ class UserPage extends StatefulWidget {
 
 class _UserPageState extends State<UserPage> {
   int currentIndex = 1;
-  final screens = [
-    const Text("2"),
-    const Text("1"),
-    const Text("3"),
+  final screens = const [
+    OCRInput(),
+    TextInput(),
+    AudioInput(),
   ];
 
   @override
