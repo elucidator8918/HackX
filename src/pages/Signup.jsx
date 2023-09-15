@@ -48,7 +48,7 @@ const Signup = () => {
     formData.append("img", file);
 
     const res = await axios.post(
-      "https://0e29-34-125-212-103.ngrok-free.app/signup/",
+      "https://84cb-35-237-78-36.ngrok-free.app/signup/",
       formData,
       {
         headers: {

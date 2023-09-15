@@ -45,8 +45,10 @@ const Mic = () => {
 
   const [suggestions, setSuggestions] = useState([]);
 
+  const [correctedText, setCorrectedText] = useState("");
+
   const mimeType = "audio/webm";
-  const ngrokurl = "https://0e29-34-125-212-103.ngrok-free.app";
+  const ngrokurl = "https://84cb-35-237-78-36.ngrok-free.app";
   //in built api reference
   const mediaRecorder = useRef(null);
 
@@ -176,26 +178,28 @@ const Mic = () => {
       setTranscription(textInput);
 
       try {
-        const response = await fetch(ngrokurl + "/grammar/", {
+        const response = await fetch(ngrokurl + "/rewriter/", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/json", // Specify JSON content type
             token: localStorage.getItem("access_token"),
-            // Specify JSON content type
           },
-          body: {
-            text: textInput.toString(),
+          body: JSON.stringify({
+            text: textInput,
             emotion: "Neutral",
-          },
+          }),
         });
+
         if (response.ok) {
-          const data = await response.json();
-          setTranscription(data.text);
+          const grammar = await response.json();
+          setCorrectedText(grammar.text);
+          console.log(transcription);
         } else {
-          console.log("Grammar failed");
+          alert("Grammar did not send a response");
         }
       } catch (error) {
         console.error("Error:", error);
+        alert("Error while fetching Grammar Model");
       }
       setclicktranscribe(false);
     } else {
@@ -215,10 +219,33 @@ const Mic = () => {
           },
           body: formData,
         });
-
         if (response.ok) {
           const data = await response.json();
           setTranscription(data.text);
+          try {
+            const response = await fetch(ngrokurl + "/rewriter/", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json", // Specify JSON content type
+                token: localStorage.getItem("access_token"),
+              },
+              body: JSON.stringify({
+                text: data.text,
+                emotion: "Neutral",
+              }),
+            });
+
+            if (response.ok) {
+              const grammar = await response.json();
+              setCorrectedText(grammar.text);
+              console.log(transcription);
+            } else {
+              alert("Grammar did not send a response");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error while fetching Grammar Model");
+          }
         } else {
           alert("Transcription failed");
         }
@@ -229,27 +256,6 @@ const Mic = () => {
       setclicktranscribe(false);
     }
     console.log(transcription);
-    try {
-      const response = await fetch(ngrokurl + "/grammar/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          token: localStorage.getItem("access_token"),
-          // Specify JSON content type
-        },
-        body: JSON.stringify({
-          text: textInput,
-        }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setTranscription(data.text);
-      } else {
-        console.log("Grammar failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
   };
 
   const handleSound = async () => {
@@ -329,7 +335,7 @@ const Mic = () => {
           token: localStorage.getItem("access_token"),
         },
         body: JSON.stringify({
-          text: transcription,
+          text: correctedText,
           emotion: "Neutral",
         }),
       });
@@ -347,30 +353,39 @@ const Mic = () => {
     }
   };
 
+  const [messages, setMessages] = useState([]);
+
+  const addMessage = (type, content) => {
+    setMessages([...messages, { type, content }]);
+  };
+
   return (
-    <div className="bg-gradient-to-b bg-cover bg-center from-gray-900 via-black to-gray-900 min-h-screen py-10 px-6">
-      <div className="flex justify-center items-center mx-auto p-2 mb-4 rounded-3xl bg-gradient-to-r from-cyan-500 to-teal-500 w-1/6">
+    <div className="bg-gradient-to-b bg-cover bg-center from-gray-900 via-black to-gray-900 min-h-screen py-10 mt-8 px-6">
+      <div className="flex justify-center items-center mx-auto p-2 mb-4 rounded-2xl bg-gradient-to-r from-cyan-500 to-teal-500 w-1/6">
         <p className="text-gray-900 font-bold">Correctify</p>
       </div>
 
       {transcription && (
-        <div className="flex flex-row justify-end items-center ml-auto">
-          <button
-            onClick={falconResponse}
-            className="bg-gradient-to-r from-pink-300 via-violet-300 to-purple-400 hover:bg-cyan-700 text-white font-bold py-2 px-6 rounded-full shadow-md focus:outline-none focus:shadow-outline flex items-center"
-          >
-            Reply
-          </button>
-          <button
-            onClick={handleNER}
-            className="bg-gradient-to-r from-pink-300 via-violet-300 to-purple-400 hover:bg-cyan-700 text-white font-bold py-2 px-6 mx-2 rounded-full shadow-md focus:outline-none focus:shadow-outline flex items-center"
-          >
-            NER <span className="mlc-2">&#10132;</span>
-          </button>
-
-          <div className="flex flex-col justify-start items-start w-1/2 bg-cyan-200 rounded-lg p-3">
-            <h2 className="text-lg font-semibold">You</h2>
-            <p className="mt-2 text-sm">{transcription}</p>
+        <div>
+          <div className="flex flex-row justify-end items-center ml-auto">
+            <div className="flex flex-col justify-start items-start w-1/2 bg-cyan-200 rounded-lg p-3">
+              <h2 className="text-lg font-semibold">You</h2>
+              <p className="mt-2 text-sm">{transcription}</p>
+            </div>
+          </div>
+          <div className="flex flex-row justify-start items-center mr-auto pt-2">
+            <div className="flex flex-col justify-start items-start w-1/2 bg-gray-200 rounded-lg p-3">
+              <h2 className="text-lg font-semibold">
+                Corrected Text by Correctify 🤖
+              </h2>
+              <p className="mt-2 text-sm">{correctedText}</p>
+            </div>
+            <button
+              onClick={falconResponse}
+              className="bg-gradient-to-r from-blue-400 via-blue-500 to-blue-400 text-white font-bold py-2 px-10 rounded-full shadow-md focus:outline-none focus:shadow-outline flex items-center ml-4"
+            >
+              Reply
+            </button>
           </div>
         </div>
       )}
@@ -526,7 +541,7 @@ const Mic = () => {
             )}
             <button
               onClick={handleTranscribe}
-              className=" hover:animate-pulse bg-gradient-to-r from-pink-300 via-violet-300 to-purple-400 hover:bg-cyan-700 text-white font-bold shadow-md py-2 px-6 ml-2 rounded-full focus:outline-none focus:shadow-outline"
+              className=" hover:animate-pulse bg-gradient-to-r from-pink-300 via-violet-300 to-purple-400 text-white font-bold shadow-md py-2 px-6 ml-2 rounded-full focus:outline-none focus:shadow-outline"
             >
               Transcribe
             </button>
