@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 const Doc = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [ocrText, setOcrText] = useState(""); // Added state for OCR text
-
+  const ngrokurl = "https://1324-34-82-10-214.ngrok-free.app"
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -14,7 +14,7 @@ const Doc = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("lang", "en");
-      fetch("https://541a-34-82-10-214.ngrok-free.app/ocr/", {
+      fetch(ngrokurl+"/ocr/", {
         method: "POST",
         headers: {
           token: localStorage.getItem("access_token"), // or your desired language code
@@ -31,7 +31,32 @@ const Doc = () => {
         });
     }
   };
+  const handleFormat = async() => {
+    try {
+      const response = await fetch(ngrokurl + "/rewriter/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify JSON content type
+          token: localStorage.getItem("access_token"),
+        },
+        body: JSON.stringify({
+          text: ocrText,
+          emotion: "Neutral",
+        }),
+      });
 
+      if (response.ok) {
+        const grammar = await response.json();
+        setOcrText(grammar.text);
+        console.log(grammar.text);
+      } else {
+        alert("Grammar did not send a response");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error while fetching Grammar Model");
+    }
+  }
   return (
     <div className="py-20 bg-gray-950 h-screen flex flex-col items-center justify-center">
       <Navbar />
@@ -49,6 +74,12 @@ const Doc = () => {
           className="ml-2 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-400"
         >
           Upload Image
+        </button>
+        <button
+          onClick={handleFormat}
+          className="ml-2 bg-cyan-500 text-white py-2 px-4 rounded hover:bg-cyan-400"
+        >
+          Reformat Text
         </button>
       </div>
       {ocrText && (
