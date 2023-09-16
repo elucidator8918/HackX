@@ -1,10 +1,17 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const flag = localStorage.getItem("flag");
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("flag"));
   const ref = useRef(null);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    localStorage.setItem("flag", "");
+    localStorage.setItem("access_token", "");
+    navigate("/");
+  };
+
   return (
     <div className="flex flex-row static ">
       <header className="absolute inset-x-0 top-0 z-50 bg-gradient-to-r from-cyan-500 to-teal-500">
@@ -59,7 +66,7 @@ export default function Navbar() {
             >
               Document Checker
             </a>
-            {flag ? (
+            {isLoggedIn ? (
               <a
                 className="text-md font-semibold leading-6 text-gray-200 hover:font-extrabold hover:shadow-xl transition-all ease-in duration-100 p-2 rounded-lg"
                 onClick={() => {
@@ -79,7 +86,7 @@ export default function Navbar() {
               </a>
             )}
           </div>
-          {!flag && (
+          {!isLoggedIn && (
             <div className="hidden lg:flex lg:flex-1 lg:justify-end">
               <a
                 className="text-sm font-semibold leading-6 text-gray-100 mr-2 p-2 hover:bg-cyan-300 bg-teal-400  border-white rounded-md transition-all duration-500 ease-in-out border-2 "
@@ -96,6 +103,16 @@ export default function Navbar() {
                 }}
               >
                 Log in <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          )}
+          {isLoggedIn && (
+            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+              <a
+                className="text-sm font-semibold leading-6 text-gray-100 mr-2 p-2 hover:bg-cyan-300 bg-teal-400  border-white rounded-md transition-all duration-500 ease-in-out border-2 "
+                onClick={handleLogout}
+              >
+                Log Out <span aria-hidden="true"></span>
               </a>
             </div>
           )}
