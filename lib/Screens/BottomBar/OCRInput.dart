@@ -287,7 +287,6 @@ class _OCRInputState extends State<OCRInput> {
       setState(() {
         this.image = imagePath;
       });
-      return imagePath;
     } on PlatformException catch (e) {
       if (kDebugMode) {
         print('Failed to pick image: $e');
