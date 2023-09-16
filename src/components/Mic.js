@@ -48,7 +48,7 @@ const Mic = () => {
   const [correctedText, setCorrectedText] = useState("");
 
   const mimeType = "audio/webm";
-  const ngrokurl = "https://6c28-34-16-180-181.ngrok-free.app";
+  const ngrokurl = "https://541a-34-82-10-214.ngrok-free.app";
   //in built api reference
   const mediaRecorder = useRef(null);
 

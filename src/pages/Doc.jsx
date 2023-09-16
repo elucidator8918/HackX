@@ -12,7 +12,7 @@ const Doc = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("lang", "en");
-      fetch("https://example.com/upload-endpoint", {
+      fetch("https://541a-34-82-10-214.ngrok-free.app/ocr/", {
         method: "POST",
         headers: {
           token: localStorage.getItem("access_token"), // or your desired language code
