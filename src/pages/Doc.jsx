@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 const Doc = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [ocrText, setOcrText] = useState(""); // Added state for OCR text
-  const ngrokurl = "https://1324-34-82-10-214.ngrok-free.app"
+  const ngrokurl = "https://2440-34-82-10-214.ngrok-free.app"
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
