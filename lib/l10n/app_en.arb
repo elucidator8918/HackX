@@ -5,7 +5,7 @@
     },
     "proceed": "Proceed",
     "@proceed": {
-        "description": "For language dropdown" 
+        "description": "For language dropdown"
     },
     "chooseLanguage": "Choose a language.",
     "@chooseLanguage": {
@@ -46,7 +46,7 @@
     "forgotPassword": "Forgot Password?",
     "@forgotPassword": {
         "description": "For forgot password"
-    }, 
+    },
     "madeAnAcc": "Haven't yet made an account? Click here to",
     "@madeAnAcc": {
         "description": "for signup support"
@@ -71,8 +71,60 @@
     "@resetPass": {
         "description": "For reset pass"
     },
-    "sendEmail": "Send email", 
+    "sendEmail": "Send email",
     "@sendEmail": {
         "description": "For send email"
+    },
+    "firstName": "Enter First Name",
+    "@firstName": {
+        "description": "For first name"
+    },
+    "lastName": "Enter Last Name",
+    "@lastName": {
+        "description": "For last name"
+    },
+    "yourHistory": "Your History",
+    "@yourHistory": {
+        "description": "For your history"
+    },
+    "text": "Text",
+    "@text": {
+        "description": "For bottombar text"
+    },
+    "audio": "Audio",
+    "@audio": {
+        "description": "For bottombar audio"
+    },
+    "camera": "Camera",
+    "@camera": {
+        "description": "For bottombar camera"
+    },
+    "enterText": "Enter text here.",
+    "@enterText": {
+        "description": "For entering text"
+    },
+    "enter": "Enter",
+    "@enter": {
+        "description": "For enter button"
+    },
+    "logout": "Logout",
+    "@logout": {
+        "description": "For logout"
+    },
+    "setting": "Setting",
+    "@setting": {
+        "description": "For settings"
+    },
+    "useCamera": "Use Camera",
+    "@useCamera": {
+        "description": "For using camera"
+    },
+    "uploadFile": "Upload File",
+    "@uploadFile": {
+        "description": "For uploading files"
+    },
+    "speakMic": "Speak into the mic.",
+    "@speakMic": {
+        "description": "For speaking into mic"
     }
 }

@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Models/AudioModel.dart';
 import '../../../constants.dart';
 import 'ChatBubble.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TextInput extends StatefulWidget {
   const TextInput({Key? key}) : super(key: key);
@@ -47,7 +48,7 @@ class _TextInputState extends State<TextInput> {
                         borderRadius: BorderRadius.circular(10.0),
                       ),
                       filled: true,
-                      hintText: "Enter text here.",
+                      hintText: AppLocalizations.of(context)!.enterText,
                       hintStyle: TextStyle(
                           fontSize: 17.5,
                           fontWeight: FontWeight.w500,
@@ -66,9 +67,9 @@ class _TextInputState extends State<TextInput> {
                       style: ButtonStyle(
                           backgroundColor:
                               MaterialStateProperty.all(Colors.cyan[500]!)),
-                      child: const Text(
-                        "Enter",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.enter,
+                        style: const TextStyle(
                           fontSize: 15.0,
                           fontWeight: FontWeight.w700,
                           color: Colors.white,

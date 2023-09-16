@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -65,11 +66,11 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ]),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 20),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
                       child: Text(
-                        "Your Watchlist",
-                        style: TextStyle(
+                         AppLocalizations.of(context)!.yourHistory,
+                        style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 24),

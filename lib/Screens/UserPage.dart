@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'BottomBar/AudioInput.dart';
 import 'BottomBar/Chat/TextInput.dart';
 import 'BottomBar/OCRInput.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserPage extends StatefulWidget {
   const UserPage({Key? key, required this.token}) : super(key: key);
@@ -66,8 +67,10 @@ class _UserPageState extends State<UserPage> {
             ),
             child: BottomNavigationBar(
               backgroundColor: Colors.cyan[500],
-              selectedItemColor: Colors.grey[900],
+              selectedItemColor: Colors.white,
               unselectedItemColor: Colors.grey[900],
+              selectedIconTheme: const IconThemeData(color: Colors.white),
+              unselectedIconTheme: IconThemeData(color: Colors.grey[900]),
               selectedFontSize: 18,
               unselectedFontSize: 14,
               iconSize: 27,
@@ -82,21 +85,21 @@ class _UserPageState extends State<UserPage> {
                     Icons.video_camera_back_outlined,
                     color: Colors.grey[900],
                   ),
-                  label: "Camera",
+                  label: AppLocalizations.of(context)!.camera,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.text_format_outlined,
                     color: Colors.grey[900],
                   ),
-                  label: "Text",
+                  label: AppLocalizations.of(context)!.text,
                 ),
                 BottomNavigationBarItem(
                   icon: Icon(
                     Icons.audiotrack_outlined,
                     color: Colors.grey[900],
                   ),
-                  label: "Audio",
+                  label: AppLocalizations.of(context)!.audio,
                 ),
               ],
             ),

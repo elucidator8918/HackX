@@ -127,7 +127,7 @@ class _AudioInputState extends State<AudioInput>
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    "Speak into the mic.",
+                    AppLocalizations.of(context)!.speakMic,
                     style: TextStyle(
                         fontFamily: "productSansReg",
                         color: Colors.cyan[500],

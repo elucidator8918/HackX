@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../HomePage.dart';
 import 'Setting.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NavigationDrawer1 extends StatelessWidget {
   const NavigationDrawer1({Key? key}) : super(key: key);
@@ -31,40 +32,12 @@ class NavigationDrawer1 extends StatelessWidget {
         Column(children: <Widget>[
           ListTile(
             leading: const Icon(
-              Icons.person,
-              color: Colors.black,
-              size: 30,
-            ),
-            title: const Text(
-              "Profile",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20),
-            ),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(
-              Icons.info,
-              color: Colors.black,
-              size: 30,
-            ),
-            title: const Text("About Us",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20)),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: const Icon(
               Icons.settings,
               color: Colors.black,
               size: 30,
             ),
-            title: const Text("Settings",
-                style: TextStyle(
+            title: Text(AppLocalizations.of(context)!.setting,
+                style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.w700,
                     fontSize: 20)),
@@ -83,8 +56,8 @@ class NavigationDrawer1 extends StatelessWidget {
                 color: Colors.redAccent,
                 size: 30,
               ),
-              title: const Text("Logout",
-                  style: TextStyle(
+              title: Text(AppLocalizations.of(context)!.logout,
+                  style: const TextStyle(
                       color: Colors.redAccent,
                       fontWeight: FontWeight.w700,
                       fontSize: 20)),

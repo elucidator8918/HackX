@@ -13,6 +13,7 @@ import '../../Models/AudioModel.dart';
 import '../../Models/Utils.dart';
 import 'package:http/http.dart' as http;
 import '../../constants.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OCRInput extends StatefulWidget {
   const OCRInput({Key? key}) : super(key: key);
@@ -69,12 +70,12 @@ class _OCRInputState extends State<OCRInput> {
               title: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
-                  "Use Camera",
+                  AppLocalizations.of(context)!.useCamera,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[900],
-                      fontSize: 25,
-                      letterSpacing: 2),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[900],
+                    fontSize: 25,
+                  ),
                 ),
               ),
               tileColor: Colors.cyan[500],
@@ -88,7 +89,6 @@ class _OCRInputState extends State<OCRInput> {
             child: ListTile(
               onTap: () async {
                 var file = await pickFile();
-                print(file.runtimeType);
                 if (file != null) {
                   await getRewrittenPDF(file);
                 }
@@ -101,12 +101,12 @@ class _OCRInputState extends State<OCRInput> {
               title: Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: Text(
-                  "Upload File",
+                  AppLocalizations.of(context)!.uploadFile,
                   style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[900],
-                      fontSize: 25,
-                      letterSpacing: 2),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey[900],
+                    fontSize: 25,
+                  ),
                 ),
               ),
               tileColor: Colors.cyan[500],

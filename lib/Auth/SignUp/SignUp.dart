@@ -13,6 +13,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -123,7 +124,9 @@ class _SignUpState extends State<SignUp> {
                                                 const EdgeInsets.all(13),
                                             fillColor: Colors.white,
                                             filled: true,
-                                            hintText: "Enter First Name",
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .firstName,
                                             hintStyle: const TextStyle(
                                                 fontFamily: "productSansReg",
                                                 fontWeight: FontWeight.w500,
@@ -155,7 +158,9 @@ class _SignUpState extends State<SignUp> {
                                                 const EdgeInsets.all(13),
                                             fillColor: Colors.white,
                                             filled: true,
-                                            hintText: "Enter Last Name",
+                                            hintText:
+                                                AppLocalizations.of(context)!
+                                                    .lastName,
                                             hintStyle: const TextStyle(
                                                 fontFamily: "productSansReg",
                                                 fontWeight: FontWeight.w500,
