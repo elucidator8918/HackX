@@ -112,7 +112,8 @@ class _TextInputState extends State<TextInput> {
         'token': '$token'
       },
       body: jsonEncode(<String, String>{
-        "text": "Rewrite such that grammatical errors are corrected: $text",
+        "text":
+            "Fix it such that grammatical and spelling errors are corrected: $text",
         "emotion": "Professional & Cheerful"
       }),
     );

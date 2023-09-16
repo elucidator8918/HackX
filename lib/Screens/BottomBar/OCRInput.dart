@@ -9,8 +9,10 @@ import 'package:flutter/services.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Models/AudioModel.dart';
 import '../../Models/Utils.dart';
 import 'package:http/http.dart' as http;
+import '../../constants.dart';
 
 class OCRInput extends StatefulWidget {
   const OCRInput({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class OCRInput extends StatefulWidget {
 class _OCRInputState extends State<OCRInput> {
   File? image;
   String? name;
+  final String url = Constants().url;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +55,10 @@ class _OCRInputState extends State<OCRInput> {
             padding:
                 const EdgeInsets.only(left: 50, right: 50, top: 8, bottom: 8),
             child: ListTile(
-              onTap: () {
-                pickImage();
+              onTap: () async {
+                var path = await pickImage();
                 if (image != null) {
-                  getOCR(image);
+                  getOCR(path);
                 }
               },
               leading: Icon(
@@ -85,6 +88,10 @@ class _OCRInputState extends State<OCRInput> {
             child: ListTile(
               onTap: () async {
                 var file = await pickFile();
+                print(file.runtimeType);
+                if (file != null) {
+                  await getRewrittenPDF(file);
+                }
               },
               leading: Icon(
                 Icons.upload_file_outlined,
@@ -112,6 +119,7 @@ class _OCRInputState extends State<OCRInput> {
   }
 
   Future getOCR(File? imagePath) async {
+    List lst = [];
     if (kDebugMode) {
       print(imagePath!.path);
     }
@@ -122,11 +130,12 @@ class _OCRInputState extends State<OCRInput> {
       'POST',
       Uri.parse('$url/ocr/'),
     );
+    response.headers.addAll(header);
     response.files.add(http.MultipartFile(
-        'img', imagePath!.readAsBytes().asStream(), imagePath.lengthSync(),
+        'file', imagePath!.readAsBytes().asStream(), imagePath.lengthSync(),
         filename: basename(imagePath.path),
         contentType: MediaType('application', 'octet-stream')));
-    response.headers.addAll(header);
+    response.fields["lang"] = "en";
     var res = await response.send();
     var responseBody = await res.stream.bytesToString();
     if (kDebugMode) {
@@ -134,10 +143,120 @@ class _OCRInputState extends State<OCRInput> {
       print(res.statusCode);
     }
     if (res.statusCode != 200) {
-      Utils.showSnackBar("Error occurred! Unable to login.");
+      Utils.showSnackBar("Error occurred!");
     }
 
     Map<String, dynamic> data = jsonDecode(responseBody);
+    var stuff = Audio.fromJson(data);
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(stuff.text);
+      }
+      lst = await getRewritten(stuff.text!);
+      if (kDebugMode) {
+        print(stuff.text);
+      }
+    }
+
+    return lst;
+  }
+
+  Future<List<Object?>> getRewritten(String text) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var res = await http.post(
+      Uri.parse('$url/rewriter/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': '$token'
+      },
+      body: jsonEncode(<String, String>{
+        "text":
+            "Fix it such that grammatical and spelling errors are corrected: $text",
+        "emotion": "Professional & Cheerful"
+      }),
+    );
+    Map<String, dynamic> data = jsonDecode(res.body);
+    var stuff = Audio.fromJson(data);
+    if (kDebugMode) {
+      print(res.statusCode);
+      print(res.body);
+    }
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(res.body);
+      }
+    }
+    return [stuff.text, res.statusCode];
+  }
+
+  Future<List<Object?>> getRewrittenPDF(File? text) async {
+    List lst = [];
+    if (kDebugMode) {
+      print(text!.path);
+    }
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var header = {'token': '$token'};
+    var response = http.MultipartRequest(
+      'POST',
+      Uri.parse('$url/ocr/'),
+    );
+    response.headers.addAll(header);
+    response.files.add(http.MultipartFile(
+        'file', text!.readAsBytes().asStream(), text.lengthSync(),
+        filename: basename(text.path),
+        contentType: MediaType('application', 'octet-stream')));
+    response.fields["lang"] = "en";
+    var res = await response.send();
+    var responseBody = await res.stream.bytesToString();
+    if (kDebugMode) {
+      print(responseBody);
+      print(res.statusCode);
+    }
+    if (res.statusCode != 200) {
+      Utils.showSnackBar("Error occurred!");
+    }
+
+    Map<String, dynamic> data = jsonDecode(responseBody);
+    var stuff = Audio.fromJson(data);
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(stuff.text);
+      }
+      lst = await getRewritten(stuff.text!);
+      if (kDebugMode) {
+        print(stuff.text);
+      }
+    }
+
+    return lst;
+  }
+
+  Future<List<Object?>> getGrammar(String text) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var token = prefs.getString('token');
+    var res = await http.post(
+      Uri.parse('$url/grammar/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'token': '$token'
+      },
+      body: jsonEncode(
+          <String, String>{"text": text, "emotion": "Professional & Cheerful"}),
+    );
+    Map<String, dynamic> data = jsonDecode(res.body);
+    var stuff = Audio.fromJson(data);
+    if (kDebugMode) {
+      print(res.statusCode);
+      print(res.body);
+    }
+    if (res.statusCode == 200) {
+      if (kDebugMode) {
+        print(res.body);
+      }
+    }
+    return [stuff.text, res.statusCode];
   }
 
   Future pickFile() async {
