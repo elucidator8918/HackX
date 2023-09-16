@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 const Doc = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [ocrText, setOcrText] = useState(""); // Added state for OCR text
-  const ngrokurl = "https://2440-34-82-10-214.ngrok-free.app"
+  const ngrokurl = "https://4fc9-35-236-195-116.ngrok-free.app";
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
@@ -14,7 +14,7 @@ const Doc = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("lang", "en");
-      fetch(ngrokurl+"/ocr/", {
+      fetch(ngrokurl + "/ocr/", {
         method: "POST",
         headers: {
           token: localStorage.getItem("access_token"), // or your desired language code
@@ -31,7 +31,7 @@ const Doc = () => {
         });
     }
   };
-  const handleFormat = async() => {
+  const handleFormat = async () => {
     try {
       const response = await fetch(ngrokurl + "/rewriter/", {
         method: "POST",
@@ -56,7 +56,7 @@ const Doc = () => {
       console.error("Error:", error);
       alert("Error while fetching Grammar Model");
     }
-  }
+  };
   return (
     <div className="py-20 bg-gray-950 h-screen flex flex-col items-center justify-center">
       <Navbar />
